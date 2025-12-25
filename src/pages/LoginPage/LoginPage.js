@@ -2,16 +2,34 @@ import React, { useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import styles from "./LoginPage.module.css";
 import { NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import { authStart, authSuccess, authFailure, logout, authSelector } from "../../redux/reducers/authReducer";
+
 
 const LoginPage = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const { user, isLoading, isAuthenticated, error } = useSelector(authSelector);
 
   const emailRef = useRef();
   const passwordRef = useRef();
 
     // If user is authenticated redirect him to home page
-
+    useEffect(() => {
+      if(isAuthenticated){
+        navigate("/")
+      }
+    }, [isAuthenticated, navigate]);
     // If some error occurs display the error
-
+     useEffect(() => {
+      if(error){
+        alert(error)
+      }
+     }, [error]);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
