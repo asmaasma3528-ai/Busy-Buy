@@ -2,14 +2,19 @@ import { configureStore } from "@reduxjs/toolkit";
 // Import your reducer and use them accordingly
 // Note that you have to name the auth ,product and cart only.
 import { authReducer } from "../reducers/authReducer";
+import { cartReducer } from "../reducers/cartReducer";
+import { productReducer } from "../reducers/productsReducer";
+import { loggerMiddleware } from "../../middleware/middleware";
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    products: 
-    cart: 
+    products: productReducer,
+    cart: cartReducer
   },
-  middleware: 
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat(loggerMiddleware)
+  }
 });
 
 // Expose the store to window for debugging in development mode do not modify the below code or else the test case will not run
