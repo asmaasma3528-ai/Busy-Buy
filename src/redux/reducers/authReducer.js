@@ -123,7 +123,7 @@ const authSlice = createSlice({
 //selectors
 export const getUser = (state) => state.auth.user;
 export const getLoadingStatus = (state) => state.auth.loading;
-export const geterrorMsg = (state) => state.auth.error;
+export const getErrorMsg = (state) => state.auth.error;
 export const getMessage = (state) => state.auth.message;
 
 //actions

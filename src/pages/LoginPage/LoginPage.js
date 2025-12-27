@@ -5,31 +5,29 @@ import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { authStart, authSuccess, authFailure, logout, authSelector } from "../../redux/reducers/authReducer";
-
+import { login, getUser, getLoadingStatus, getErrorMsg } from "../../redux/reducers/authReducer";
+import Home from "../HomePage/HomePage.js";
 
 const LoginPage = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const { user, isLoading, isAuthenticated, error } = useSelector(authSelector);
+    const user = useSelector(getUser);
+    const error = useSelector(getErrorMsg);
+    const loading = useSelector(getLoadingStatus);
 
   const emailRef = useRef();
   const passwordRef = useRef();
 
     // If user is authenticated redirect him to home page
-    useEffect(() => {
-      if(isAuthenticated){
-        navigate("/")
-      }
-    }, [isAuthenticated, navigate]);
-    // If some error occurs display the error
-     useEffect(() => {
-      if(error){
-        alert(error)
-      }
-     }, [error]);
+      useEffect(() => {
+        if(user){
+          return navigate("/");
+        }
+        if(error){
+          return toast.error(error);
+        }
+      }, [user, error, navigate]);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -41,6 +39,7 @@ const LoginPage = () => {
       return toast.error("Please enter valid data!");
     }
     // write function here to login the user using redux
+    dispatch(login({ email:emailVal, password:passwordVal }))
   };
 
   return (
