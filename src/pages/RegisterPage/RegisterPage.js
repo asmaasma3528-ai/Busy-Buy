@@ -2,12 +2,33 @@ import React, { useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import styles from "./RegisterPage.module.css";
 
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+import { signup, getUser, getLoadingStatus, getErrorMsg } from "../../redux/reducers/authReducer";
+
 const RegisterPage = () => {
+
+  const user = useSelector(getUser);
+  const loading = useSelector(getLoadingStatus);
+  const error = useSelector(getErrorMsg);
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   // Input refs
   const nameRef = useRef();
   const emailRef = useRef();
   const passwordRef = useRef();
   // If user is authenticated redirect him to home page
+  useEffect(() => {
+    if(user){
+      return navigate("/");
+    }
+    if(error){
+      return toast.error(error);
+    }
+  }, [user, error, navigate]);
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     const nameVal = nameRef.current.value;
@@ -25,6 +46,7 @@ const RegisterPage = () => {
     }
 
     // call the signup function usig redux here 
+    dispatch(signup({name:nameVal, email:emailVal, password:passwordVal}));
 
   };
 
