@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import { useRef, useEffect } from "react";
 import { toast } from "react-toastify";
 import styles from "./RegisterPage.module.css";
 

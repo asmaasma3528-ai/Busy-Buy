@@ -3,12 +3,22 @@ import Loader from "../../components/UI/Loader/Loader";
 import styles from "./OrdersPage.module.css";
 import OrderTable from "../../components/OrderTable/OrderTable";
 
+import { useDispatch } from "react-redux";
+import { fetchProducts } from "../../redux/reducers/cartReducer";
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
-
+ 
+  const dispatch = useDispatch();
   // Fetch user orders from firestore
+   useEffect(() => {
+    setLoading(true);
+    dispatch(fetchProducts().then((prod) => 
+    {setOrders(prod.payload || [])
+    setLoading(false);
+    }))
+   })
  
   if (loading) {
     return <Loader />;
